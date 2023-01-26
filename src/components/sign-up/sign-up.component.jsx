@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import "./sign-up-form.scss";
 
 import { creatAuthUserWithEmailAndPassword, creatUserDocumentFromAuth } from '../../utils/firebase/firebase.utils';
+import FormInput from '../form-input/form-input.component';
+import Button from '../button/button.component';
 
 function SignUp() {
     const defaultFormFields = {
@@ -38,22 +41,14 @@ function SignUp() {
         // Let's create a form validation in Utils for the content of this form.
     }
     return (
-        <div>
-            <h1>Sign up with your Email & Password</h1>
-            <form onSubmit = { Submit }>
-                <label>Display Name</label>
-                <input type="text" name="displayName" onChange={handleChange} required value={displayName}/>
-
-                <label>Email</label>
-                <input type="email" name="email" onChange={handleChange} required value={email}/>
-
-                <label>Password</label>
-                <input type="password" name="password" onChange={handleChange} required value={password}/>
-
-                <label>Confirm Password</label>
-                <input type="password" name='confirmPassword' onChange={handleChange} required value={confirmPassword}/>
-
-                <button type="submit">Sign Up</button>
+        <div className='sign-up-container'>
+            <h2>Don't have an account?</h2>
+            <form onSubmit = { Submit } >
+                <FormInput label="Display Name" type="text" name="displayName" onChange={handleChange} required value={displayName} />
+                <FormInput label="Email" type="email" name="email" onChange={handleChange} required value={email} />
+                <FormInput label="Password" type="password" name="password" onChange={handleChange} required value={password} />
+                <FormInput label="Confirm Password" name='confirmPassword' onChange={handleChange} required value={confirmPassword} />
+                <Button type="submit" >Sign Up</Button>
             </form>
         </div>
     )
