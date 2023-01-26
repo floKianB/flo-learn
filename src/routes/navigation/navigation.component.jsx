@@ -1,10 +1,20 @@
+import React, { useContext } from "react";
 import { Link, Outlet } from "react-router-dom";
 import './navigation.styles.scss';
 
 import FloLogo from '../../assets/images/logo.png';
 import Cart from '../../assets/images/cart.png';
 
+import { UserContext } from "../../context/user.context";
+
+import { signOutUser } from "../../utils/firebase/firebase.utils";
+
 const Navigation = () => {
+    const { currentUser } = useContext(UserContext);
+
+    const signOutHandler = async () => {
+        await signOutUser()
+    }
     return(
         <>
             <nav className="navigation">
@@ -13,7 +23,13 @@ const Navigation = () => {
                 </Link>
                 <div className="nav-links-container">
                     <Link className="nav-link" to='/shop'>SHOP</Link>
-                    <Link className="nav-link" to='/authentication'>SIGN IN</Link>
+                    {
+                        currentUser ? (
+                            <Link className="nav-link" to='/' onClick={signOutHandler}>SIGN OUT</Link>
+                        ) : (
+                            <Link className="nav-link" to='/authentication'>SIGN IN</Link>
+                        )
+                    }
                 </div>
                 <div>
                     <img className="cart-icon" src={Cart} alt='logo' />

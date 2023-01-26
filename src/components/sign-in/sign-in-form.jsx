@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "./sign-in-form.scss";
+
 
 import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
 
 function SignInForm() {
+    const navigate = useNavigate();
+
     const defaultFormFields = {
         email: '',
         password: '',
@@ -17,17 +21,14 @@ function SignInForm() {
 
 
     const logGoogleUserPopup = async () => {
-        const { user } = await signInWithGooglePopup();
-        console.log(user)
+        await signInWithGooglePopup();
     }
 
     const Submit = async (e) => {
         e.preventDefault();
-        
         try {
-            const response = await signInAuthUserWithEmailAndPassword(email, password);
-            console.log(response);
-            ResetFormFields();
+            await signInAuthUserWithEmailAndPassword(email, password);
+            navigate('/')
         } catch(error){
             switch(error.code){
                 case "auth/wrong-password":
@@ -37,8 +38,18 @@ function SignInForm() {
                     alert("user not found");
                     break;
                 default:
-                    console.log(error)
+                    console.log(error);
+                
+                ResetFormFields();
             }
+        }
+    }
+    const logGoogleUserPopupHnadler = async () => {
+        try {
+            await logGoogleUserPopup();
+            navigate('/');
+        } catch (error){
+            console.log(error);
         }
     }
 
@@ -51,12 +62,12 @@ function SignInForm() {
         <>
         <div className='sign-in-container'>
             <h2>I already have an account?</h2>
-            <form onSubmit = { Submit } >
+            <form onSubmit = { Submit } action='/' >
                 <FormInput label="Email" type="email" name="email" onChange={handleChange} required value={email} />
                 <FormInput label="Password" type="password" name="password" onChange={handleChange} required value={password} />
                 <div className="buttons-container">
                     <Button type="submit" >Sign In</Button>
-                    <Button type="button" onClick={() => logGoogleUserPopup()} buttonType="google">Google Sign In</Button>
+                    <Button type="button" onClick={() => logGoogleUserPopupHnadler()} buttonType="google">Google Sign In</Button>
                 </div>
             </form>
         </div>
