@@ -5,7 +5,7 @@ import { creatAuthUserWithEmailAndPassword, creatUserDocumentFromAuth } from '..
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
 
-function SignUp() {
+function SignUpForm() {
     const defaultFormFields = {
         displayName: '',
         email: '',
@@ -41,6 +41,7 @@ function SignUp() {
         // Let's create a form validation in Utils for the content of this form.
     }
     return (
+        <>
         <div className='sign-up-container'>
             <h2>Don't have an account?</h2>
             <form onSubmit = { Submit } >
@@ -51,7 +52,9 @@ function SignUp() {
                 <Button type="submit" >Sign Up</Button>
             </form>
         </div>
+        </>
+        
     )
 }
 
-export default SignUp;
+export default SignUpForm;
