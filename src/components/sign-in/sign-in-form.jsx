@@ -6,6 +6,7 @@ import "./sign-in-form.scss";
 import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
+import { Notify } from '../../utils/notify.utils';
 
 function SignInForm() {
     const navigate = useNavigate();
@@ -28,18 +29,19 @@ function SignInForm() {
         e.preventDefault();
         try {
             await signInAuthUserWithEmailAndPassword(email, password);
+            Notify('success', 'Signed in successfully')
             navigate('/')
         } catch(error){
             switch(error.code){
                 case "auth/wrong-password":
-                    alert("incorrect password");
+                    Notify('error', 'Incorrect Password')
                     break;
                 case "auth/user-not-found":
-                    alert("user not found");
+                    Notify('error', 'No User Found')
                     break;
                 default:
                     console.log(error);
-                
+
                 ResetFormFields();
             }
         }
@@ -47,6 +49,7 @@ function SignInForm() {
     const logGoogleUserPopupHnadler = async () => {
         try {
             await logGoogleUserPopup();
+            Notify('success', 'Signed in successfully')
             navigate('/');
         } catch (error){
             console.log(error);

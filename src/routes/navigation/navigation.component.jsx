@@ -5,15 +5,20 @@ import './navigation.styles.scss';
 import FloLogo from '../../assets/images/logo.png';
 import Cart from '../../assets/images/cart.png';
 
+import { ToastContainer } from 'react-toastify';
+
+
 import { UserContext } from "../../context/user.context";
 
 import { signOutUser } from "../../utils/firebase/firebase.utils";
+import { Notify } from "../../utils/notify.utils";
 
 const Navigation = () => {
     const { currentUser } = useContext(UserContext);
 
     const signOutHandler = async () => {
         await signOutUser()
+        Notify('error', "Signed Out successfully")
     }
     return(
         <>
@@ -35,6 +40,7 @@ const Navigation = () => {
                     <img className="cart-icon" src={Cart} alt='logo' />
                 </div>
             </nav>
+            <ToastContainer style={{marginTop: '50px'}} autoClose={2500} />
             <Outlet/>
         </>
     );

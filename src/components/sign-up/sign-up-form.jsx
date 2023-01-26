@@ -6,6 +6,7 @@ import "./sign-up-form.scss";
 import { creatAuthUserWithEmailAndPassword, creatUserDocumentFromAuth } from '../../utils/firebase/firebase.utils';
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
+import { Notify } from '../../utils/notify.utils';
 
 function SignUpForm() {
     const navigate = useNavigate();
@@ -24,17 +25,18 @@ function SignUpForm() {
     const Submit = async (e) => {
         e.preventDefault();
         if(confirmPassword !== password) {
-            alert('Passwords do not match');
+            Notify('error', 'Passwords do not match')
             return;
         } 
         try {
             const { user } = await creatAuthUserWithEmailAndPassword(email, password);
             await creatUserDocumentFromAuth(user, { displayName });
             ResetFormFields();
-            navigate('/')
+            Notify('success', 'Account is Created Successfully')
+            navigate('/');
         } catch(error){
             if(error.code === 'auth/email-already-in-use'){
-                alert('Email already in use')
+                Notify('error', 'Email Already in Use')
             }
             console.log('Error in creating user with email and password' + error);
             ResetFormFields();
