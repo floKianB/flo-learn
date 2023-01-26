@@ -15,13 +15,14 @@ const firebaseApp = initializeApp(firebaseConfig);
 export const db = getFirestore();
 
 // Authentication
-const provider = new GoogleAuthProvider();          // Using google auth provider class
-provider.setCustomParameters({
+const googleProvider = new GoogleAuthProvider();          // Using google auth provider class
+googleProvider.setCustomParameters({
     prompt: "select_account",
 });
 
 export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider);         // We want the signInWithPopup function to get runinng when it is called
+export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);         // We want the signInWithPopup function to get runinng when it is called
+export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider)
 
 export const creatUserDocumentFromAuth = async (userAuth) => {
     const useDocRef = doc(db, 'users', userAuth.uid);
