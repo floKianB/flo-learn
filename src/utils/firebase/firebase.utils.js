@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 // Firebase configuration
 const firebaseConfig = {
@@ -24,25 +24,30 @@ export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);         // We want the signInWithPopup function to get runinng when it is called
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider)
 
-export const creatUserDocumentFromAuth = async (userAuth) => {
-    const useDocRef = doc(db, 'users', userAuth.uid);
-    console.log(useDocRef);
+export const creatUserDocumentFromAuth = async (userAuth, additionalInfo = {}) => {
+    const userDocRef = doc(db, 'users', userAuth.uid);
+    console.log(userDocRef);
 
-    const userSnapShot = await getDoc(useDocRef)
+    const userSnapShot = await getDoc(userDocRef)
     // if user dose not exist
     if(!userSnapShot.exists()){
         const { displayName, email } = userAuth;
         const createdAt = new Date();
         try{
-            await setDoc(useDocRef, {
+            await setDoc(userDocRef, {
                 displayName,
                 email,
                 createdAt,
+                ...additionalInfo,
             })
         } catch (error) {
             console.log('error in creating user')
         }
-    
     }
-    
+    return userDocRef;
+};
+
+export const creatAuthUserWithEmailAndPassword = async (email, password) => {
+    if(!email || !password) return;                             //Exith the method when email or password is not provided
+    return await createUserWithEmailAndPassword(auth, email, password)
 }
