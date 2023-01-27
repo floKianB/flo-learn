@@ -3,19 +3,22 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import './navigation.styles.scss';
 
 import FloLogo from '../../assets/images/logo.png';
-import Cart from '../../assets/images/cart.png';
 
 import { ToastContainer } from 'react-toastify';
 
 
 import { UserContext } from "../../context/user.context";
+import { CartContext } from "../../context/cart.context";
 
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 import { Notify } from "../../utils/notify.utils";
+import CartIcon from "../../components/cart-icon/cart-icon.component";
+import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
 
 const Navigation = () => {
     const route = useLocation().pathname;
     const { currentUser } = useContext(UserContext);
+    const {isCartOpen, setIsCartOpen} = useContext(CartContext)
 
     const signOutHandler = async () => {
         await signOutUser()
@@ -39,9 +42,10 @@ const Navigation = () => {
                     }
                 </div>
                 <div>
-                    <img className="cart-icon" src={Cart} alt='logo' />
+                    <CartIcon />
                 </div>
             </nav>
+            { isCartOpen && <CartDropdown /> }
             <ToastContainer style={{marginTop: '50px'}} autoClose={2500} />
             <Outlet/>
         </>
