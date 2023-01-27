@@ -18,7 +18,7 @@ import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component
 const Navigation = () => {
     const route = useLocation().pathname;
     const { currentUser } = useContext(UserContext);
-    const {isCartOpen, setIsCartOpen} = useContext(CartContext)
+    const { isCartOpen } = useContext(CartContext)
 
     const signOutHandler = async () => {
         await signOutUser()
