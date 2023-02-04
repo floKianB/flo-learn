@@ -2,7 +2,10 @@ import React, { useContext } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import './navigation.styles.scss';
 
-import FloLogo from '../../assets/images/logo.png';
+import FloLogo from '../../assets/images/Flo-logo.png';
+import account from '../../assets/images/account.svg';
+import notification from '../../assets/images/notification.svg';
+import favorite from '../../assets/images/favorite.svg';
 
 import { ToastContainer } from 'react-toastify';
 
@@ -20,33 +23,36 @@ const Navigation = () => {
     const { currentUser } = useContext(UserContext);
     const { isCartOpen } = useContext(CartContext)
 
-    const signOutHandler = async () => {
-        await signOutUser()
-        Notify('error', "Signed Out successfully")
-    }
+    // const signOutHandler = async () => {
+    //     await signOutUser()
+    //     Notify('error', "Signed Out successfully")
+    // }
     return(
         <>
             <nav className="navigation">
-                <Link className="logo-container" to='/'>
-                    <img className="logo" src={FloLogo} alt='logo' />
-                </Link>
-                <div className="nav-links-container">
-                    <Link className={`nav-link ${route === '/' ? 'active' : ''}`} to='/'>HOME</Link>
-                    <Link className={`nav-link ${route === '/shop' ? 'active' : ''}`} to='/shop'>SHOP</Link>
-                    {
-                        currentUser ? (
-                            <Link className={`nav-link`} to='/' onClick={signOutHandler}>SIGN OUT</Link>
-                        ) : (
-                            <Link className={`nav-link ${route === '/authentication' ? 'active' : ''}`} to='/authentication'>SIGN IN</Link>
-                        )
-                    }
+                <div className="left-side">
+                    <Link className="logo-container" to='/'>
+                        <img className="logo" src={FloLogo} alt='logo' />
+                    </Link>
+                    <p>Categories</p>
                 </div>
-                <div>
+                
+
+                <div className="right-side">
+                    <Link className={`nav-link ${route === '/shop' ? 'active' : ''}`} to='/courses'>Contact Us</Link>
+                    <Link className={`nav-link ${route === '/shop' ? 'active' : ''}`} to='/courses'>New Learning</Link>
+                    {
+                        currentUser ? <Link className={`nav-link ${route === '/shop' ? 'active' : ''}`} to='/classes'>My Classes</Link> : null
+                    }
+                    <img src={favorite} alt="favorite" className="favorite-icon"/>
                     <CartIcon />
+                    <img src={notification} alt="notification" className="notification-icon"/>
+                    <img src={account} alt="account" className="account-icon"/>
                 </div>
             </nav>
             { isCartOpen && <CartDropdown /> }
             <ToastContainer style={{marginTop: '50px'}} autoClose={2500} />
+            
             <Outlet/>
         </>
     );
