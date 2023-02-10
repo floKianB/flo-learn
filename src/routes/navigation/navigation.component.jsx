@@ -23,10 +23,10 @@ const Navigation = () => {
     const { currentUser } = useContext(UserContext);
     const { isCartOpen } = useContext(CartContext)
 
-    // const signOutHandler = async () => {
-    //     await signOutUser()
-    //     Notify('error', "Signed Out successfully")
-    // }
+    const signOutHandler = async () => {
+        await signOutUser()
+        Notify('error', "Signed Out successfully")
+    }
     return(
         <>
             <nav className="navigation">
@@ -35,19 +35,26 @@ const Navigation = () => {
                         <img className="logo" src={FloLogo} alt='logo' />
                     </Link>
                     <p>Categories</p>
+                    {
+                        currentUser ? 
+                        (
+                            <>
+                                <Link className={`nav-link ${route === '/shop' ? 'active' : ''}`} to='/classes'>My Classes</Link>
+                                <Link className={`nav-link ${route === '/shop' ? 'active' : ''}`} to='/' onClick={signOutHandler}>Log Out</Link>
+                            </>
+                        ) 
+                        : null
+                    }
                 </div>
                 
 
                 <div className="right-side">
-                    <Link className={`nav-link ${route === '/shop' ? 'active' : ''}`} to='/courses'>Contact Us</Link>
+                    <Link className={`nav-link ${route === '/shop' ? 'active' : ''}`} to='/contact-us'>Contact Us</Link>
                     <Link className={`nav-link ${route === '/shop' ? 'active' : ''}`} to='/courses'>New Learning</Link>
-                    {
-                        currentUser ? <Link className={`nav-link ${route === '/shop' ? 'active' : ''}`} to='/classes'>My Classes</Link> : null
-                    }
                     <img src={favorite} alt="favorite" className="favorite-icon"/>
                     <CartIcon />
                     <img src={notification} alt="notification" className="notification-icon"/>
-                    <img src={account} alt="account" className="account-icon"/>
+                    <Link to='/authentication'><img src={account} alt="account" className="account-icon"/></Link>
                 </div>
             </nav>
             { isCartOpen && <CartDropdown /> }
