@@ -1,17 +1,26 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './courses.styles.scss';
 
-import ProductCard from '../../components/product-card/product-card.component';
-import { ProductsContext } from '../../context/products.context';
+import { getCourses } from '../../utils/firebase/firebase.utils';
+import CourseCard from '../../components/course-card/course-card.component';
+import { CoursesContext } from '../../context/courses.context';
+
 
 function Shop() {
-    const { products } = useContext(ProductsContext)
+    const { courses, setCourses } = useContext(CoursesContext);
+    useEffect(async() => {
+        const allCourses = await getCourses();
+        if(courses.length === 0){
+            setCourses(allCourses);
+        }
+    }, [])
+
     return (
         <div className="products-container">
             {
-                products.map((product) => {
+                courses.map((course) => {
                     return (
-                        <ProductCard key={product.id} product={product}/>
+                        <CourseCard key={course.id} course={course.data()}/>
                     );
                 })
             }

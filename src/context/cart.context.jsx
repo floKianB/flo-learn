@@ -15,7 +15,7 @@ const addCartItemChecker = (cartItems, selectedProductToAdd) => {
     // Product already exist in cart
     const checkIfProductExists = cartItems.find((eachCartItem) => eachCartItem.id === selectedProductToAdd.id)
     if(checkIfProductExists){
-        return cartItems.map((eachCartItem) => eachCartItem.id === selectedProductToAdd.id ? { ...eachCartItem, quantity: eachCartItem.quantity+1 } : eachCartItem)
+        return cartItems;
     }
     // New product adding to Cart
     return [...cartItems, { ...selectedProductToAdd, quantity: 1 }]
@@ -23,11 +23,7 @@ const addCartItemChecker = (cartItems, selectedProductToAdd) => {
 // This Function is designed to check if a product should be removed or decrease the quantity of it
 const removeCartItemChecker = (cartItems, selectedProductToRemove) => {
     const selectedProduct = (cartItems.find((eachCartItem) => eachCartItem.id === selectedProductToRemove.id));
-    if(selectedProduct.quantity !== 1){
-        return cartItems.map((eachCartItem) => eachCartItem.id === selectedProductToRemove.id ? { ...eachCartItem, quantity: eachCartItem.quantity-1 } : eachCartItem)
-    } else {
-        return cartItems.filter((eachCartItem) => eachCartItem.id !== selectedProduct.id);
-    }
+    return cartItems.filter((eachCartItem) => eachCartItem.id !== selectedProduct.id);
 }
 // This function wil delete the product from our cart immediately
 const deleteAProduct = (cartItems, selectedProductToDelete) => {

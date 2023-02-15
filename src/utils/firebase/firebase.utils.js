@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, getDocs, collection } from 'firebase/firestore';
 // Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyAVoGZyCYgKBj7i4G350y7GYHBdeEwL1kQ",
@@ -12,7 +12,7 @@ const firebaseConfig = {
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
-export const db = getFirestore();
+export const db = getFirestore(firebaseApp);
 
 // Authentication
 const googleProvider = new GoogleAuthProvider();          // Using google auth provider class
@@ -61,3 +61,15 @@ export const signOutUser = async() => signOut(auth)
 
 
 export const onAuthStateChangeListener = (callback) => onAuthStateChanged(auth, callback)
+
+
+// _____________________________________________________________________________________________________
+
+export const getCourses = async () => {
+    const coursesSnapshot = await getDocs(collection(db, 'Courses'));
+    let courses = [];
+    coursesSnapshot.forEach((course)=>{
+        courses.push(course);
+    })
+    return courses;
+}
