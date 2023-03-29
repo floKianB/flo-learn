@@ -8,8 +8,9 @@ export const CoursesContext = createContext({
 
 export const CoursesProvider = ({ children }) => {
     const [courses, setCourses] = useState([]);
-    const value = { courses, setCourses };
+    const [tags, setTags] = useState([]);
+    const value = { courses, setCourses, tags, setTags };
     return (
         <CoursesContext.Provider value={value}>{children}</CoursesContext.Provider>
-    )
+    );
 }
