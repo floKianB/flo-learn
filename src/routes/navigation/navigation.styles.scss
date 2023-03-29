@@ -32,7 +32,8 @@
     min-width: 490px;
     width: 40%;
     max-width: 700px;
-    justify-content: space-evenly;
+    justify-content: flex-end;
+    gap: 25px;
     // Navigators
     .nav-link {
       padding: 0px 0px;
