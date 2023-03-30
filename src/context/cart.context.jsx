@@ -13,21 +13,22 @@ export const CartContext = createContext({
 // This Function is designed to check how a new product should be added to the cart
 const addCartItemChecker = (cartItems, selectedProductToAdd) => {
     // Product already exist in cart
-    const checkIfProductExists = cartItems.find((eachCartItem) => eachCartItem.id === selectedProductToAdd.id)
-    if(checkIfProductExists){
-        return cartItems;
+    const exitingCourseNames = [];
+    cartItems.forEach((eachExistingCourse)=>exitingCourseNames.push(eachExistingCourse.name));
+    console.log(exitingCourseNames)
+    const courseAlreadyExists = exitingCourseNames.includes(selectedProductToAdd.name)
+    if(!courseAlreadyExists){
+        return [...cartItems, { ...selectedProductToAdd }];
+    } else {
+        return [...cartItems];
+
     }
-    // New product adding to Cart
-    return [...cartItems, { ...selectedProductToAdd, quantity: 1 }]
-}
-// This Function is designed to check if a product should be removed or decrease the quantity of it
-const removeCartItemChecker = (cartItems, selectedProductToRemove) => {
-    const selectedProduct = (cartItems.find((eachCartItem) => eachCartItem.id === selectedProductToRemove.id));
-    return cartItems.filter((eachCartItem) => eachCartItem.id !== selectedProduct.id);
+    
 }
 // This function wil delete the product from our cart immediately
 const deleteAProduct = (cartItems, selectedProductToDelete) => {
-    return cartItems.filter((eachCartItem) => eachCartItem.id !== selectedProductToDelete.id);
+    console.log(selectedProductToDelete);
+    return cartItems.filter((eachCartItem) => eachCartItem.name !== selectedProductToDelete.name);
 }
 
 // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -39,10 +40,7 @@ export const CartProvider = ({ children }) => {
     const addItemToCart = ( selectedProductToAdd ) => {
         setCartItems(addCartItemChecker(cartItems, selectedProductToAdd))
     }
-    // Remove or Delete product from cart items
-    const removeItemFromCart = ( selectedProductToRemove ) => {
-        setCartItems(removeCartItemChecker(cartItems, selectedProductToRemove))
-    }
+    // Delete product from cart items
     const deleteItemFromCart = ( selectedProductToDelete ) => {
         setCartItems(deleteAProduct(cartItems, selectedProductToDelete))
     }
@@ -68,7 +66,6 @@ export const CartProvider = ({ children }) => {
         cartItems, 
         setCartItems, 
         addItemToCart, 
-        removeItemFromCart, 
         deleteItemFromCart, 
         cartCount, 
         totalPrice

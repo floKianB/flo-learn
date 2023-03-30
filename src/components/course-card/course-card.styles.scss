@@ -1,5 +1,6 @@
 .product-card-container {
   width: 100%;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   height: fit-content;
@@ -45,7 +46,7 @@
         display: flex;
         position: absolute;
         z-index: 2;
-        width: 50%;
+        width: 20%;
       }
   }
   }
