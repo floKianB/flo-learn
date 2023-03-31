@@ -18,7 +18,8 @@ const addCartItemChecker = (cartItems, selectedProductToAdd) => {
     console.log(exitingCourseNames)
     const courseAlreadyExists = exitingCourseNames.includes(selectedProductToAdd.name)
     if(!courseAlreadyExists){
-        return [...cartItems, { ...selectedProductToAdd }];
+        
+        return [...cartItems, { ...selectedProductToAdd, quantity: 1}];
     } else {
         return [...cartItems];
 
